@@ -18,7 +18,7 @@ all_chars = (u' ఁంఃఅఆఇఈఉఊఋఌఎఏఐఒఓఔ'
 
 
 def tel2int(text):
-    return [all_chars.find(char) for char in text]
+    return [all_chars.find(char)+1 for char in text]
 
 
 def pprint(nparr):
@@ -41,11 +41,10 @@ def scribe(text, fontname, ten=10, style=''):
 
     size_x = 3 * ten * n_letters + 5 * ten  # TODO: Take into account # of spaces
     size_y = 5 * ten * n_lines + 5 * ten
-
-    print("Lines: ", n_lines)
-    print("Letters: ", n_letters)
-    print("Size X: ", size_x)
-    print("Size Y: ", size_y)
+    # print("Lines: ", n_lines)
+    # print("Letters: ", n_letters)
+    # print("Size X: ", size_x)
+    # print("Size Y: ", size_y)
 
     data = np.zeros((size_y, size_x, 4), dtype=np.uint8)
     surf = cairo.ImageSurface.create_for_data(data, cairo.FORMAT_ARGB32,
@@ -86,8 +85,35 @@ def trim(nparr):
         return np.array([[]])
 
 
-def scribe_trim(*args, **kwargs):
-    return trim(scribe(*args, **kwargs))
+def smartrim(nparr, target_ht, wd_buffer):
+    ht, wd = nparr.shape
+    assert ht >= target_ht
+
+    good_rows = np.where(np.sum(nparr, axis=1) > 0)[0]
+    good_cols = np.where(np.sum(nparr, axis=0) > 0)[0]
+
+    if len(good_rows):
+        top, bot = good_rows.min(), good_rows.max() + 1
+        lft, rgt = good_cols.min(), good_cols.max() + 1
+    else:
+        top, bot, lft, rgt = 0, target_ht, wd_buffer, wd_buffer+1
+
+    ######## Center and Clip
+    newtop = max(0, top + (bot - top - target_ht)//2)
+    newbot = newtop + target_ht
+    if newbot > ht:
+        print('Ht {}, top{}, bot{}, newtop{}, newbot{}'.format(ht, top, bot,
+                                                               newtop, newbot))
+        newbot = ht
+        newtop = newbot - target_ht
+
+    assert newbot-newtop == target_ht
+
+    ######## Buffer
+    lft = max(0, lft-wd_buffer)
+    rgt = min(rgt+wd_buffer, wd)
+
+    return nparr[newtop:newbot, lft:rgt]
 
 
 if __name__ == '__main__':
