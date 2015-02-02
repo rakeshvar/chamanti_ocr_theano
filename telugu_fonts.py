@@ -64,20 +64,23 @@ font_properties = {
 'Vani':                     [48, 'K', 'BR', 0, 1, 'Vani', 1],
 'Vemana2000':               [48, 'K', 'BR', 1, 1, 'Vemana', 1]
 }
-if __name__ == '__main__':
-    import pangocairo
 
-    #get font families:
-    font_map = pangocairo.cairo_font_map_get_default()
+
+if __name__ == '__main__':
+    from gi.repository import PangoCairo
+
+    font_map = PangoCairo.font_map_get_default()
     families = font_map.list_families()
     font_names = [f.get_name() for f in families]
 
     for f in sorted(font_names):
         if f in font_properties:
-            print f, font_properties[f]
+            print('\n{}{}'.format(f, font_properties[f]))
         else:
-            print f, " not in my list"
+            print("[X]{}\t".format(f))
 
     for f in font_properties:
-        if not (f in font_names):
-            print f, " is not installed"
+        if f in font_names:
+            print("[✓]{}\t".format(f), end='')
+        else:
+            print("\n[!]{} Not Installed".format(f))

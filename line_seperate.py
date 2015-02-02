@@ -1,5 +1,6 @@
-#/usr/bin/env python
+#/usr/bin/env python3
 #*-* coding: utf-8 *-*
+
 from scipy import ndimage
 import numpy as np
 from PIL import Image as im
@@ -25,13 +26,15 @@ class Image():
         self.hist = np.sum(self.data, axis=1).astype('float')
         hist_mean = np.mean(self.hist)
         self.fft = abs(np.fft.rfft(self.hist - hist_mean))
-        max_harm = np.argmax(self.fft)
+        max_harm = int(np.argmax(self.fft))
         assert max_harm > 0
 
         self.best_harmonic = self.ht // (1 + max_harm)
         self.gaus_hist = ndimage.filters.gaussian_filter1d(self.hist,
-                    self.best_harmonic/16, truncate=4.0,  mode='constant',
-                    cval=0)
+                    self.best_harmonic/16, mode='constant',
+                    cval=0,
+                    # truncate=4.0,
+        )
         self.d_gaus_hist = ndimage.filters.convolve(self.gaus_hist, [-1, 0, 1])
 
     def find_baselines(self,):
@@ -45,16 +48,16 @@ class Image():
         self.base_lines = []
 
         for i, val in enumerate(hist):
-            if inpeak == False:
+            if not inpeak:
                 if val > peakthresh:
-                    print 'transition to in-peak @ ', i, val
+                    print('transition to in-peak @ ', i, val)
                     inpeak = True
                     maxval = val
                     maxloc = i
                     mintosearch = i + min_dist_in_peak
                     # accept no zeros between i and i+mintosearch
 
-            else: # inpeak == TRUE; look for max
+            else:  #  in peak, look for max
                 if val > maxval:
                     maxval = val
                     maxloc = i
@@ -62,11 +65,10 @@ class Image():
                 elif i > mintosearch and val <= zerothresh:
                     # leave peak and save the last baseline found
                     inpeak = False
-                    print 'Found baseline @ ', maxloc
+                    print('Found baseline @ ', maxloc)
                     self.base_lines.append(maxloc)
 
         self.num_lines = len(self.base_lines)
-
 
     def separate_lines(self,):
         self.top_lines = []
@@ -76,7 +78,7 @@ class Image():
             # Find top lines
             if i == 0:  frm = 0
             else:   frm = self.line_sep[i]
-            print " Searching for top line in range : ", frm+1, base
+            print(" Searching for top line in range : ", frm+1, base)
             top_at = np.argmin(self.d_gaus_hist[frm+1:base])
             self.top_lines.append(frm + 1 + top_at)
 
@@ -88,35 +90,44 @@ class Image():
             sep_at = np.argmin(self.gaus_hist[base+1:to])
             self.line_sep.append(base + 1 + sep_at)
 
-
     def get_line(self, i):
         return self.data[self.line_sep[i]:self.line_sep[i+1]]
 
-import sys
-im = Image(sys.argv[1])
 
-for row in im.data:
-    for p in row[:80]:
-        print {0:' ', 1:'#'}[p],
-    print
+################################ UNIT TEST ################################
 
-#im.filter_noise()
-im.calc_hist()
-for l, i, j, k in zip(range(im.ht), im.hist, im.gaus_hist, im.d_gaus_hist):
-    print l, i, j, k
-im.find_baselines()
-im.separate_lines()
+if __name__ == '__main__':
+    import sys
+    from print_utils import pprint
 
-for k, v in im.__dict__.items():
-    print k, ': ',
-    try:
-        print v.shape
-    except:
-        print v
+    img = Image(sys.argv[1])
 
-print "BEST HARMONIC", im.best_harmonic
+    img.filter_noise()
+    img.calc_hist()
+    for l, i, j, k in zip(range(img.ht),
+                          img.hist,
+                          img.gaus_hist,
+                          img.d_gaus_hist):
+        print(l, i, j, k)
+    print()
 
-for i in range(im.num_lines):
-    print im.line_sep[i]
-    print im.top_lines[i], im.base_lines[i]
-print im.line_sep[-1]
+    img.find_baselines()
+    img.separate_lines()
+
+    print('\nImage Properties:')
+    for k, v in img.__dict__.items():
+        try:
+            print(k, ':', v.shape, '(shape)')
+        except AttributeError:
+            print(k, ':', v)
+    print()
+
+    for i in range(img.num_lines):
+        print(img.line_sep[i])
+        print(img.top_lines[i], img.base_lines[i])
+    print(img.line_sep[-1])
+
+    line = img.get_line(img.num_lines//2)
+    ht, wd = line.shape
+    line = line[ht//4:3*ht//4, wd//4:wd//4+80]
+    pprint(line)

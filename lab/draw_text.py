@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# coding=utf-8
+
 from gi.repository import Gtk, Gdk, cairo, Pango, PangoCairo
 import math
 import sys
@@ -8,6 +8,7 @@ import sys
 RADIUS = 150
 N_WORDS = 10
 FONT = "Sans Bold 12"
+
 
 class Squareset(Gtk.DrawingArea):
     def __init__ (self, upper=9, text=''):
@@ -51,6 +52,7 @@ class Squareset(Gtk.DrawingArea):
 def destroy(window):
         Gtk.main_quit()
 
+
 def main():
     window = Gtk.Window()
     window.set_title ("Hello World")
@@ -63,6 +65,7 @@ def main():
     window.connect_after('destroy', destroy)
     window.show_all()
     Gtk.main()
+
 
 if __name__ == "__main__":
     sys.exit(main())

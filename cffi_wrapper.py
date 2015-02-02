@@ -1,8 +1,5 @@
-#!/usr/bin/python3
-# coding: utf8
-import cairocffi
 import cffi
-
+import cairocffi
 
 ffi = cffi.FFI()
 ffi.include(cairocffi.ffi)
@@ -13,19 +10,47 @@ ffi.cdef('''
 
     /* Pango and PangoCairo */
     typedef ... PangoLayout;
+
     typedef enum {
         PANGO_ALIGN_LEFT,
         PANGO_ALIGN_CENTER,
         PANGO_ALIGN_RIGHT
     } PangoAlignment;
+
     int pango_units_from_double (double d);
+
     PangoLayout * pango_cairo_create_layout (cairo_t *cr);
+
     void pango_cairo_show_layout (cairo_t *cr, PangoLayout *layout);
+
+    void pango_cairo_update_layout (cairo_t *cr, PangoLayout *layout);
+
     void pango_layout_set_width (PangoLayout *layout, int width);
+
     void pango_layout_set_alignment (
         PangoLayout *layout, PangoAlignment alignment);
+
     void pango_layout_set_markup (
         PangoLayout *layout, const char *text, int length);
+
+    void pango_layout_set_text (
+        PangoLayout *layout, const char *text, int length);
+
+    typedef ... PangoFontDescription;
+
+    PangoFontDescription* pango_font_description_new(void);
+
+    void pango_font_description_set_family(
+        PangoFontDescription *desc, const char *family);
+
+    void pango_layout_set_font_description(
+        PangoLayout *layout, const PangoFontDescription *desc);
+
+    PangoFontDescription* pango_font_description_from_string (
+        const char *str);
+
+    void pango_font_description_set_size (
+        PangoFontDescription *desc, int size);
 ''')
 gobject = ffi.dlopen('gobject-2.0')
 pango = ffi.dlopen('pango-1.0')
@@ -33,25 +58,3 @@ pangocairo = ffi.dlopen('pangocairo-1.0')
 
 gobject_ref = lambda pointer: ffi.gc(pointer, gobject.g_object_unref)
 units_from_double = pango.pango_units_from_double
-
-
-def write_example_pdf(target):
-    pt_per_mm = 72 / 25.4
-    width, height = 210 * pt_per_mm, 297 * pt_per_mm  # A4 portrait
-    surface = cairocffi.PDFSurface(target, width, height)
-    context = cairocffi.Context(surface)
-    context.translate(0, 300)
-    context.rotate(-0.2)
-
-    layout = gobject_ref(
-        pangocairo.pango_cairo_create_layout(context._pointer))
-    pango.pango_layout_set_width(layout, units_from_double(width))
-    pango.pango_layout_set_alignment(layout, pango.PANGO_ALIGN_CENTER)
-    markup = u'<span font="italic 30">Παν語 నుండి మీకు నమస్కారం!</span>'
-    markup = ffi.new('char[]', markup.encode('utf8'))
-    pango.pango_layout_set_markup(layout, markup, -1)
-    pangocairo.pango_cairo_show_layout(context._pointer, layout)
-
-
-if __name__ == '__main__':
-    write_example_pdf(target='pango_example.pdf')
