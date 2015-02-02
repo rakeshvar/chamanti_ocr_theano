@@ -99,6 +99,7 @@ class Image():
 if __name__ == '__main__':
     import sys
     from print_utils import pprint
+    from PIL import ImageDraw as id
 
     img = Image(sys.argv[1])
 
@@ -131,3 +132,14 @@ if __name__ == '__main__':
     ht, wd = line.shape
     line = line[ht//4:3*ht//4, wd//4:wd//4+80]
     pprint(line)
+
+    img_col = img.img.convert("RGB")
+    draw = id.Draw(img_col)
+    def line(ats, col):
+        for at in ats:
+            draw.line((0, at, img.wd, at), fill=col, width=2)
+
+    line(img.top_lines,  (255,0,0))
+    line(img.base_lines, (0,255,0))
+    line(img.line_sep, (0,0,255))
+    img_col.show()
