@@ -65,6 +65,20 @@ font_properties = {
 'Vemana2000':               [48, 'K', 'BR', 1, 1, 'Vemana', 1]
 }
 
+font_properties_list = list(font_properties.items())
+import random
+
+def random_font():
+    font, properties = random.choice(font_properties_list)
+    size, gho, repha, ppu, spacing, abbr, bold = range(7)
+    style = random.randrange(4 if bold else 2)
+
+    return {
+        'font':font,
+        'size':size,
+        'style':style,
+        'spacing':spacing,
+    }
 
 if __name__ == '__main__':
     from gi.repository import PangoCairo

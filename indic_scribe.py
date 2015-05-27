@@ -10,7 +10,7 @@ styles = '', ' Italic', ' Bold', ' Bold Italic'
 
 
 def scribe(text, fontname, ten=10, style=0,
-           sz=48, spc=1, movex=10, movey=0, twist=0):
+           size=48, spacing=1, movex=10, movey=0, twist=0):
     lines = text.split('\n')
     n_lines = len(lines)
     n_letters = max(len(line) for line in lines)
@@ -38,7 +38,7 @@ def scribe(text, fontname, ten=10, style=0,
     pango.pango_layout_set_text(layout, text.encode('utf8'), -1)
 
     style = styles[style]
-    font_style = "{} {} {}".format(fontname, style, (sz * ten)//10)
+    font_style = "{} {} {}".format(fontname, style, (size * ten)//10)
     font_desc = pango.pango_font_description_from_string(
         font_style.encode('utf8'))
     pango.pango_layout_set_font_description(layout, font_desc)
