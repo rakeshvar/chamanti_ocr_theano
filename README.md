@@ -4,7 +4,8 @@
 This project aims to build a very ambitious OCR framework, that should work on any language. It 
 will not rely on segmentation algorithms (at least at the glyph level), 
 making it ideal for highly agglutinative scripts like Arabic, Devanagari etc. We will be starting
- with Telugu however. 
+ with Telugu however. The core technology behind this is going to be Recurrent Neural Networks 
+ using CTC. The support for this will be coming from the repo [rnn_ctc](github.com/rakeshvar/rnn_ctc).
 
 # Code so far
 Date `2016, Mar, 8`
