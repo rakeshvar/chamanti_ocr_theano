@@ -27,9 +27,9 @@ For now you can see if `indic_scribe.py` is working properly by running it as
 ```sh
 python3 indic_scribe.py <(echo 'క్రైః') > kraih.txt
 ```
-The output should contain the text rendered in various fonts! You can get the various fonts from 
-(this repo)[https://github.com/TeluguOCR/Fonts]. Just copy all the fonts to your `~/.fonts` 
-directory.
+The output should contain the text rendered in various fonts! 
+* You can get the various fonts from [this repo](https://github.com/TeluguOCR/Fonts). Just copy all the fonts to your `~/.fonts` directory. 
+* But before running ensure you have the following 
 
 # Pre-requisites
 You need `libffi`, `cffi` and `cairocffi`. These are constantly changing and are works in 
