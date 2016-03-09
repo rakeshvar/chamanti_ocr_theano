@@ -9,18 +9,18 @@ making it ideal for highly agglutinative scripts like Arabic, Devanagari etc. We
 # Code so far
 Date `2016, Mar, 8`
 
-1. akshara_regexp:  Regular expression to split a Telugu sentence into aksharas(syllables).
-2. cffi_wrapper.py: A wrapper around functions to render text to images. (Uses cairo via cffi)
-3. indic_scribe.py: Uses cffi_wrapper to render given text to image.
-4. linedraw.py: Class wrapper around indic_scribe and a labeler.
-5. print_utils.py
-6. scribe_corpus.py: Given a corpus of unicode text. It will write each line to an image and 
+1. `akshara_regexp`:  Regular expression to split a Telugu sentence into aksharas(syllables).
+2. `cffi_wrapper.py`: A wrapper around functions to render text to images. (Uses cairo via cffi)
+3. `indic_scribe.py`: Uses cffi_wrapper to render given text to image.
+4. `linedraw.py`: Class wrapper around indic_scribe and a labeler.
+5. `print_utils.py`
+6. `scribe_corpus.py`: Given a corpus of unicode text. It will write each line to an image and 
 save the numpy arrays. Uses `indic_scribe`.
-7. telugu_fonts.py - List of telugu fonts and their properties.
-8. telugu_labeler_basic.py - A labler, takes a string of unicode text and returns a sequence of 
+7. `telugu_fonts.py`: List of telugu fonts and their properties.
+8. `telugu_labeler_basic.py`: A labler, takes a string of unicode text and returns a sequence of 
 labels. These labels could be at the akshara level or unicode character level or at an intermediate 
 level. The basic labeler just returns one label for each unicode character.
-9. line_seperate.py - Detects lines in a binary text image.
+9. `line_seperate.py`: Detects lines in a binary text image.
 
 # Testing
 For now you can see if `indic_scribe.py` is working properly by running it as 
