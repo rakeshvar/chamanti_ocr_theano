@@ -22,6 +22,15 @@ labels. These labels could be at the akshara level or unicode character level or
 level. The basic labeler just returns one label for each unicode character.
 9. line_seperate.py - Detects lines in a binary text image.
 
+# Testing
+For now you can see if `indic_scribe.py` is working properly by running it as 
+```sh
+python3 indic_scribe.py <(echo 'క్రైః') > kraih.txt
+```
+The output should contain the text rendered in various fonts! You can get the various fonts from 
+(this repo)[https://github.com/TeluguOCR/Fonts]. Just copy all the fonts to your `~/.fonts` 
+directory.
+
 # Pre-requisites
 You need `libffi`, `cffi` and `cairocffi`. These are constantly changing and are works in 
 progress. More over you might need root privileges to install libraires.
