@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 """
 File contains the properties of available Telugu Fonts as a dictionary.
 Fields:

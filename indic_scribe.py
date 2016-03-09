@@ -101,7 +101,7 @@ def smartrim(nparr, target_ht, wd_buffer):
 
 if __name__ == '__main__':
     import sys
-    from telugu_fonts import font_properties
+    from telugu_fonts import font_properties, ABBR
     from print_utils import pprint
 
     if len(sys.argv) < 2:
@@ -123,5 +123,6 @@ if __name__ == '__main__':
 
     for font in sorted(font_properties):
         x = scribe(txt, font, tenn)
-        pprint(x)
-        pprint(smartrim(x, tenn*3, tenn//2))
+        print(font_properties[font][ABBR])
+        pprint(trim(x))
+        # pprint(smartrim(x, tenn*3, tenn//2))
