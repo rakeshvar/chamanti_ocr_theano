@@ -7,8 +7,8 @@ making it ideal for highly agglutinative scripts like Arabic, Devanagari etc. We
  with Telugu however. 
 
 # Code so far
-
 Date `2016, Mar, 8`
+
 1. akshara_regexp:  Regular expression to split a Telugu sentence into aksharas(syllables).
 2. cffi_wrapper.py: A wrapper around functions to render text to images. (Uses cairo via cffi)
 3. indic_scribe.py: Uses cffi_wrapper to render given text to image.
@@ -23,7 +23,6 @@ level. The basic labeler just returns one label for each unicode character.
 9. line_seperate.py - Detects lines in a binary text image.
 
 # Pre-requisites
-
 You need `libffi`, `cffi` and `cairocffi`. These are constantly changing and are works in 
 progress. More over you might need root privileges to install libraires.
 
@@ -60,7 +59,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/usr/lib:~/usr/lib64
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:~/usr/include:~/usr/lib/libffi-3.2.1/include
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/usr/include:~/usr/lib/libffi-3.2.1/include
 
-LDFLAGS=-L/home/rakesha/usr/lib64 pip3 install cffi==0.8.6
+LDFLAGS=-L/home/<NAME>/usr/lib64 pip3 install cffi==0.8.6
 pip3 install cairocffi==0.6
 ```
 
