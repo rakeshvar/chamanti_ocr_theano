@@ -4,32 +4,33 @@
 This project aims to build a very ambitious OCR framework, that should work on any language. It 
 will not rely on segmentation algorithms (at least at the glyph level), 
 making it ideal for highly agglutinative scripts like Arabic, Devanagari etc. We will be starting
- with Telugu however. 
+ with Telugu however. The core technology behind this is going to be Recurrent Neural Networks 
+ using CTC. The support for this will be coming from the repo [rnn_ctc](https://github.com/rakeshvar/rnn_ctc).
 
 # Code so far
 Date `2016, Mar, 8`
 
-1. akshara_regexp:  Regular expression to split a Telugu sentence into aksharas(syllables).
-2. cffi_wrapper.py: A wrapper around functions to render text to images. (Uses cairo via cffi)
-3. indic_scribe.py: Uses cffi_wrapper to render given text to image.
-4. linedraw.py: Class wrapper around indic_scribe and a labeler.
-5. print_utils.py
-6. scribe_corpus.py: Given a corpus of unicode text. It will write each line to an image and 
+1. `akshara_regexp`:  Regular expression to split a Telugu sentence into aksharas(syllables).
+2. `cffi_wrapper.py`: A wrapper around functions to render text to images. (Uses cairo via cffi)
+3. `indic_scribe.py`: Uses cffi_wrapper to render given text to image.
+4. `linedraw.py`: Class wrapper around indic_scribe and a labeler.
+5. `print_utils.py`
+6. `scribe_corpus.py`: Given a corpus of unicode text. It will write each line to an image and 
 save the numpy arrays. Uses `indic_scribe`.
-7. telugu_fonts.py - List of telugu fonts and their properties.
-8. telugu_labeler_basic.py - A labler, takes a string of unicode text and returns a sequence of 
+7. `telugu_fonts.py`: List of telugu fonts and their properties.
+8. `telugu_labeler_basic.py`: A labler, takes a string of unicode text and returns a sequence of 
 labels. These labels could be at the akshara level or unicode character level or at an intermediate 
 level. The basic labeler just returns one label for each unicode character.
-9. line_seperate.py - Detects lines in a binary text image.
+9. `line_seperate.py`: Detects lines in a binary text image.
 
 # Testing
 For now you can see if `indic_scribe.py` is working properly by running it as 
 ```sh
 python3 indic_scribe.py <(echo 'క్రైః') > kraih.txt
 ```
-The output should contain the text rendered in various fonts! You can get the various fonts from 
-(this repo)[https://github.com/TeluguOCR/Fonts]. Just copy all the fonts to your `~/.fonts` 
-directory.
+The output should contain the text rendered in various fonts! 
+* You can get the various fonts from [this repo](https://github.com/TeluguOCR/Fonts). Just copy all the fonts to your `~/.fonts` directory. 
+* But before running ensure you have the following 
 
 # Pre-requisites
 You need `libffi`, `cffi` and `cairocffi`. These are constantly changing and are works in 
