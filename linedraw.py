@@ -1,40 +1,32 @@
-import fonters
-import labelers
-import indic_scribe as ind
 import random
+import indic_scribe as ind
 
-class LineDraw():
-    def __init__(self,
-                 length=1,
-                 tenn=5,
-                 ht=36,
-                 buf=5,
-                 labeler_name="basic",
-                 language="Telugu",
-                 ):
-        self.length = length
-        self.tenn = tenn
-        self.ht = ht
-        self.buf = buf
+import telugu as language
 
-        self.texter = None  # (length)
-        self.labeler = labelers.get_labler_by_name(labeler_name)
-        self.fonter = fonters.get_fonter_by_name(language)
+tenn = 10
+ht = 45
+buf = 5
 
-    def get_line(self, length=None):
-        twist = random.random()
-        font_prop = self.fonter()
+def get_line(length=None):
+    twist = random.random()
+    font_prop = language.random_font()
 
-        text = self.texter.get(length)
-        img = ind.scribe(text,
-                         font_prop["font"],
-                         size=font_prop["size"],
-                         style=font_prop["style"],
-                         twist=twist)
+    text = language.get_word(length)
+    img = ind.scribe(text,
+                     fontname=font_prop["font"],
+                     size=font_prop["size"],
+                     style=font_prop["style"],
+                     twist=twist,
+                     ten=tenn)
 
-        img = ind.smartrim(img, self.ht, self.buf)
+    #img = ind.smartrim(img, ht, buf)
 
-        return img, self.labeler(text)
+    return img, language.get_labels(text), twist, text, font_prop
 
-    def set_length(self, length):
-        self.length = length
+if __name__ == '__main__':
+    from print_utils import pprint
+    image, labels, angle, text, fp = get_line(3)
+    pprint(image)
+    print(labels)
+    print(angle, fp)
+    print(text)
