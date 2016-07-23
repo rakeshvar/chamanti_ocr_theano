@@ -69,14 +69,13 @@ import random
 
 def random_font():
     font, properties = random.choice(font_properties_list)
-    size, gho, repha, ppu, spacing, abbr, bold = range(7)
-    style = random.randrange(4 if bold else 2)
+    style = random.randrange(4 if properties[BOLD] else 2)
 
     return {
         'font':font,
-        'size':size,
+        'size':properties[SIZE],
         'style':style,
-        'spacing':spacing,
+        'spacing':properties[SPACING],
     }
 
 if __name__ == '__main__':

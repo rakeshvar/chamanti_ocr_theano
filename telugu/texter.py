@@ -1,7 +1,6 @@
 import os
 import pickle
 from random import randrange
-from collections import defaultdict, Counter
 
 print("Loading the uni and bigram counts")
 this_dir, this_filename = os.path.split(__file__)

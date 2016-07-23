@@ -43,9 +43,10 @@ if len(sys.argv) < 3:
 
 fout = open('/tmp/bigram.txt', 'w')  
 for key, n in sorted(unicount.items(), key=lambda x: x[1], reverse=True):
-    fout.write("\n\n" + key + " : " + str(n) + "\n " )
+    fout.write("\n\n" + key + " : " + str(n) + "\n ")
     for char, count in sorted(bicount[key].items(), 
-                                       key=lambda x: x[1], reverse=True):
+                              key=lambda x: x[1],
+                              reverse=True):
         fout.write(" "+char+":"+str(count))
 fout.close()
 
