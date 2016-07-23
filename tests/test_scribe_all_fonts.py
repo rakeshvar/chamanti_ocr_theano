@@ -1,6 +1,7 @@
 import sys
-import indic_scribe
-from print_utils import pprint
+import scribe
+from trimmers import trim
+from utils import slab_print
 import telugu as language
 import telugu.fonts as fonts
 
@@ -22,7 +23,7 @@ except IndexError:
     tenn = 10
 
 for font in sorted(language.font_properties):
-    x = indic_scribe.scribe(txt, font, tenn)
+    x = scribe.scribe(txt, font, tenn)
     print(language.font_properties[font][fonts.ABBR])
-    pprint(indic_scribe.trim(x))
+    slab_print(trim(x))
     # pprint(indic_scribe.smartrim(x, tenn*3, tenn//2))

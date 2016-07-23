@@ -10,73 +10,71 @@ Fields:
     Has Bold
 """
 
-SIZE, GHO, REPHA, PPU, SPACING, ABBR, BOLD = range(7)
+SIZE, GHO, REPHA, PPU, SPACING, BOLD, ABBR, = range(7)
 font_properties = {
-'Akshar Unicode':           [48, 'K', 'BB', 0, 1, 'Akshar', 1],
-'Dhurjati':                 [48, 'K', 'BB', 0, 1, 'Dhurjati', 1],
-'Gautami':                  [48, 'K', 'BB', 0, 1, 'Gautami', 1],
-'Gidugu':                   [48, 'K', 'BR', 1, 1, 'Gidugu', 1],
-'GIST-TLOTAmma':            [28, 'K', 'LR', 1, 1, 'Amma', 1],
-'GIST-TLOTAmruta':          [28, 'K', 'LR', 1, 1, 'Amruta', 0],
-'GIST-TLOTAtreya':          [28, 'K', 'LR', 1, 1, 'Atreya', 1],
-'GIST-TLOTChandana':        [28, 'K', 'LR', 1, 1, 'Chandana', 0],
-'GIST-TLOTDeva':            [28, 'K', 'LR', 1, 1, 'Deva', 0],
-'GIST-TLOTDraupadi':        [28, 'K', 'LR', 1, 1, 'Draupadi', 1],
-'GIST-TLOTGolkonda':        [28, 'K', 'LR', 1, 1, 'Golkonda', 0],
-'GIST-TLOTKrishna':         [28, 'K', 'LR', 1, 1, 'Krishna', 1],
-'GIST-TLOTManu':            [28, 'K', 'LR', 1, 1, 'Manu', 1],
-'GIST-TLOTMenaka':          [28, 'K', 'LR', 1, 1, 'Menaka', 1],
-'GIST-TLOTPavani':          [28, 'K', 'LR', 1, 1, 'Pavani', 0],
-'GIST-TLOTPriya':           [22, 'K', 'LR', 1, 1, 'Priya', 0],
-'GIST-TLOTRajan':           [28, 'K', 'LR', 1, 1, 'Rajan', 0],
-'GIST-TLOTRajani':          [28, 'K', 'LR', 1, 1, 'Rajani', 0],
-'GIST-TLOTSanjana':         [28, 'K', 'LR', 1, 1, 'Sanjana', 0],
-'GIST-TLOTSitara':          [28, 'K', 'LR', 1, 1, 'Sitara', 0],
-'GIST-TLOTSwami':           [28, 'K', 'LR', 1, 1, 'Swami', 0],
-'GIST-TLOTVennela':         [28, 'K', 'LR', 1, 1, 'Vennela', 1],
-'Gurajada':                 [48, 'K', 'BR', 1, 1, 'Gurajada', 1],
-'LakkiReddy':               [48, 'K', 'BB', 0, 1, 'LakkiReddy', 1],
-'Lohit Telugu':             [48, 'K', 'BB', 0, 1, 'Lohit', 1],
-'Mallanna':                 [48, 'T', 'BB', 0, 1, 'Mallanna', 1],
-'Mandali':                  [48, 'T', 'LB', 0, 1, 'Mandali', 1],
-'Nandini':                  [48, 'K', 'LL', 0, 1, 'Nandini', 1],
-'NATS':                     [48, 'K', 'BR', 1, 1, 'NATS', 1],
-'Noto Sans Telugu':         [48, 'K', 'BR', 0, 1, 'Noto', 1],
-'NTR':                      [48, 'K', 'BB', 1, 1, 'NTR', 1],
-'Peddana':                  [48, 'K', 'BR', 0, 1, 'Peddana', 1],
-'Ponnala':                  [48, 'K', 'BB', 0, 1, 'Ponnala', 1],
-'Pothana2000':              [48, 'K', 'BR', 1, 1, 'Pothana', 1],
-'Ramabhadra1':              [48, 'T', 'BB', 0, 1, 'Ramabhadra', 1],
-'RamaneeyaWin':             [48, 'K', 'BB', 0, 1, 'Ramaneeya', 1],
-'Ramaraja':                 [48, 'K', 'BB', 0, 1, 'Ramaraja', 1],
-'RaviPrakash':              [48, 'K', 'BB', 0, 1, 'RaviPrakash', 1],
-'Sree Krushnadevaraya':     [48, 'T', 'BB', 0, 1, 'Krushnadeva', 1],
-'Subhadra':                 [48, 'T', 'BB', 0, 1, 'Subhadra', 1],
-'Suguna':                   [48, 'T', 'BB', 1, 2, 'Suguna', 1],
-'Suranna':                  [48, 'T', 'LR', 0, 1, 'Suranna', 1],
-'SuraVara_Samhita':         [48, 'K', 'BB', 0, 1, 'Samhita', 1],
-'SURAVARA_Swarna':          [48, 'K', 'BB', 0, 1, 'Swarna', 1],
-'Suravaram':                [48, 'K', 'BR', 1, 1, 'Suravaram', 1],
-'TenaliRamakrishna':        [48, 'K', 'BB', 0, 1, 'Tenali', 1],
-'Timmana':                  [48, 'K', 'BB', 0, 1, 'Timmana', 0],
-'Vajram':                   [48, 'K', 'BB', 0, 1, 'Vajram', 1],
-'Vani':                     [48, 'K', 'BR', 0, 1, 'Vani', 1],
-'Vemana2000':               [48, 'K', 'BR', 1, 1, 'Vemana', 1]
+'Akshar Unicode':           [48, 'K', 'BB', 0, 1, 1, 'Akshar',  ],
+'Dhurjati':                 [48, 'K', 'BB', 0, 1, 1, 'Dhurjati',],
+'Gautami':                  [48, 'K', 'BB', 0, 1, 1, 'Gautami', ],
+'Gidugu':                   [48, 'K', 'BR', 1, 1, 1, 'Gidugu',  ],
+'GIST-TLOTAmma':            [28, 'K', 'LR', 1, 1, 1, 'Amma',    ],
+'GIST-TLOTAmruta':          [28, 'K', 'LR', 1, 1, 0, 'Amruta',  ],
+'GIST-TLOTAtreya':          [28, 'K', 'LR', 1, 1, 1, 'Atreya',  ],
+'GIST-TLOTChandana':        [28, 'K', 'LR', 1, 1, 0, 'Chandana',],
+'GIST-TLOTDeva':            [28, 'K', 'LR', 1, 1, 0, 'Deva',    ],
+'GIST-TLOTDraupadi':        [28, 'K', 'LR', 1, 1, 1, 'Draupadi',],
+'GIST-TLOTGolkonda':        [28, 'K', 'LR', 1, 1, 0, 'Golkonda',],
+'GIST-TLOTKrishna':         [28, 'K', 'LR', 1, 1, 1, 'Krishna', ],
+'GIST-TLOTManu':            [28, 'K', 'LR', 1, 1, 1, 'Manu',    ],
+'GIST-TLOTMenaka':          [28, 'K', 'LR', 1, 1, 1, 'Menaka',  ],
+'GIST-TLOTPavani':          [28, 'K', 'LR', 1, 1, 0, 'Pavani',  ],
+'GIST-TLOTPriya':           [22, 'K', 'LR', 1, 1, 0, 'Priya',   ],
+'GIST-TLOTRajan':           [28, 'K', 'LR', 1, 1, 0, 'Rajan',   ],
+'GIST-TLOTRajani':          [28, 'K', 'LR', 1, 1, 0, 'Rajani',  ],
+'GIST-TLOTSanjana':         [28, 'K', 'LR', 1, 1, 0, 'Sanjana', ],
+'GIST-TLOTSitara':          [28, 'K', 'LR', 1, 1, 0, 'Sitara',  ],
+'GIST-TLOTSwami':           [28, 'K', 'LR', 1, 1, 0, 'Swami',   ],
+'GIST-TLOTVennela':         [28, 'K', 'LR', 1, 1, 1, 'Vennela', ],
+'Gurajada':                 [48, 'K', 'BR', 1, 1, 1, 'Gurajada',],
+'LakkiReddy':               [48, 'K', 'BB', 0, 1, 1, 'LakkiReddy',],
+'Lohit Telugu':             [48, 'K', 'BB', 0, 1, 1, 'Lohit',   ],
+'Mallanna':                 [48, 'T', 'BB', 0, 1, 1, 'Mallanna',],
+'Mandali':                  [48, 'T', 'LB', 0, 1, 1, 'Mandali', ],
+'Nandini':                  [48, 'K', 'LL', 0, 1, 1, 'Nandini', ],
+'NATS':                     [48, 'K', 'BR', 1, 1, 1, 'NATS',    ],
+'Noto Sans Telugu':         [48, 'K', 'BR', 0, 1, 1, 'Noto',    ],
+'NTR':                      [48, 'K', 'BB', 1, 1, 1, 'NTR',     ],
+'Peddana':                  [48, 'K', 'BR', 0, 1, 1, 'Peddana', ],
+'Ponnala':                  [48, 'K', 'BB', 0, 1, 1, 'Ponnala', ],
+'Pothana2000':              [48, 'K', 'BR', 1, 1, 1, 'Pothana', ],
+'Ramabhadra1':              [48, 'T', 'BB', 0, 1, 1, 'Ramabhadra',  ],
+'RamaneeyaWin':             [48, 'K', 'BB', 0, 1, 1, 'Ramaneeya',   ],
+'Ramaraja':                 [48, 'K', 'BB', 0, 1, 1, 'Ramaraja',    ],
+'RaviPrakash':              [48, 'K', 'BB', 0, 1, 1, 'RaviPrakash', ],
+'Sree Krushnadevaraya':     [48, 'T', 'BB', 0, 1, 1, 'Krushnadeva', ],
+'Subhadra':                 [48, 'T', 'BB', 0, 1, 1, 'Subhadra',    ],
+'Suguna':                   [48, 'T', 'BB', 1, 2, 1, 'Suguna',  ],
+'Suranna':                  [48, 'T', 'LR', 0, 1, 1, 'Suranna', ],
+'SuraVara_Samhita':         [48, 'K', 'BB', 0, 1, 1, 'Samhita', ],
+'SURAVARA_Swarna':          [48, 'K', 'BB', 0, 1, 1, 'Swarna',  ],
+'Suravaram':                [48, 'K', 'BR', 1, 1, 1, 'Suravaram',],
+'TenaliRamakrishna':        [48, 'K', 'BB', 0, 1, 1, 'Tenali',  ],
+'Timmana':                  [48, 'K', 'BB', 0, 1, 0, 'Timmana', ],
+'Vajram':                   [48, 'K', 'BB', 0, 1, 1, 'Vajram',  ],
+'Vani':                     [48, 'K', 'BR', 0, 1, 1, 'Vani',    ],
+'Vemana2000':               [48, 'K', 'BR', 1, 1, 1, 'Vemana',  ],
 }
 
 font_properties_list = list(font_properties.items())
+
 import random
+
 
 def random_font():
     font, properties = random.choice(font_properties_list)
     style = random.randrange(4 if properties[BOLD] else 2)
 
-    return {
-        'font':font,
-        'size':properties[SIZE],
-        'style':style,
-        'spacing':properties[SPACING],
-    }
+    return font, properties[SIZE], style
+
 
 if __name__ == '__main__':
     from gi.repository import PangoCairo

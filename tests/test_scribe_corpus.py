@@ -2,8 +2,8 @@
 
 import sys
 import pickle
-import indic_scribe as scribe
-from print_utils import pprint
+import scribe as scribe
+from utils import slab_print
 
 import telugu as language
 
@@ -27,7 +27,7 @@ for line in text.split('\n'):
         [sz, gho, rep, ppu, spc, abbr, hasbold] = language.font_properties[fontname]
 
         for style in range(4 if hasbold else 2):
-            x = scribe.scribe(line, fontname, 5, style, sz, spc)
+            x = scribe.scribe(line, fontname, 5, style, spc)
             # x = scribe.smartrim(x, 36, 5)
             y = language.get_labels(line)
             xs.append(x)
@@ -36,7 +36,7 @@ for line in text.split('\n'):
             if printall or fontname is "Mallanna":
                 print(fontname, style, ys[-1])
                 print(xs[-1].shape)
-                pprint(xs[-1])
+                slab_print(xs[-1])
 
 if in_file_name.startswith('/dev'):
     out_file_name = "tmp.pkl"
