@@ -1,9 +1,17 @@
+'''
+A wrapper around functions to render text to images. 
+Uses cairo via cffi.
+Based on:
+    https://pythonhosted.org/cairocffi/cffi_api.html#example-using-pango-through-cffi-with-cairocffi
+    https://github.com/Kozea/cairocffi/issues/87
+'''
 import cffi
-import cairocffi
+# import cairocffi
 
 ffi = cffi.FFI()
-ffi.include(cairocffi.ffi)
+# ffi.include(cairocffi.ffi)
 ffi.cdef('''
+    typedef void cairo_t;
     /* GLib */
     typedef void* gpointer;
     void g_object_unref (gpointer object);

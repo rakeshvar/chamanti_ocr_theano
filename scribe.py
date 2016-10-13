@@ -1,11 +1,15 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Uses cffi_wrapper to render given text to image.
+'''
 import random
 import array
 
 import numpy as np
 
 import cffi_wrapper as cp
+import cairocffi
 from trimmers import horztrim
 
 
@@ -14,11 +18,11 @@ def scribe(text, font_style,
            movex, movey,
            twist):
 
-    fmt = cp.cairocffi.FORMAT_A8
-    width = cp.cairocffi.ImageSurface.format_stride_for_width(fmt, width)
+    fmt = cairocffi.FORMAT_A8
+    width = cairocffi.ImageSurface.format_stride_for_width(fmt, width)
     data = array.array('b', [0] * (height * width))
-    surface = cp.cairocffi.ImageSurface(fmt, width, height, data, width)
-    context = cp.cairocffi.Context(surface)
+    surface = cairocffi.ImageSurface(fmt, width, height, data, width)
+    context = cairocffi.Context(surface)
     # cffi.pangocairo.pango_cairo_set_antialias(cffi.cairo.ANTIALIAS_SUBPIXEL)
     context.translate(movex, movey)
     context.rotate(twist)

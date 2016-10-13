@@ -7,12 +7,12 @@ if len(sys.argv) < 2:
     print("""Usage: {0} input_text_file [show_bigram]
     Program counts the frequency of each Telugu letter following another and 
     writes out a binary <input_text_file>.bigram using pickle.
-    show_bigram when supplied a text file with the bigram is shown.
+    [show_bigram] - when supplied a text file with the bigram is shown.
     """.format(sys.argv[0]))
     sys.exit()
 
-#                                     | include space also
-aksh_pattern = re.compile(r"([ఁ-ఔ])|( )|(([క-హ]్)*[క-హ][ా-ౌ])|"
+#                            ↓ include space also.
+aksh_pattern = re.compile(r"( )|([ఁ-ఔ])|(([క-హ]్)*[క-హ][ా-ౌ])|"
                           r"(([క-హ]్)*[క-హ](?![ా-్]))|(([క-హ]్)+(?=\s))")
 bicount = defaultdict(Counter)
 unicount = Counter()
@@ -35,7 +35,7 @@ dump.close()
 # Dump Pickle
 import pickle
 with open(sys.argv[1]+'.bigram', 'wb') as f:
-    pickle.dump((beg_line, end_line, unicount, bicount), f)     
+    pickle.dump((beg_line, end_line, unicount, bicount), f, 2)     
 
 # DUMP
 if len(sys.argv) < 3:

@@ -17,6 +17,7 @@ try:
     # print("Twist: {:.3f}".format(angle), fp)
     # print(text)
     print(scriber)
+    print("Press Enter to continue and Ctrl-D to quit.")
     input()
 except (KeyboardInterrupt, EOFError):
     pass

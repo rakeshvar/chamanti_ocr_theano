@@ -1,5 +1,8 @@
 # /usr/bin/env python3
 #*-* coding: utf-8 *-*
+'''
+Detects lines in a binary text image.
+'''
 import numpy as np
 from scipy import ndimage as nd
 from PIL import Image as im

@@ -1,27 +1,19 @@
 # చామంతి
 
 # Mission
-This project aims to build a very ambitious OCR framework, that should work on any language. It
-will not rely on segmentation algorithms (at least at the glyph level),
-making it ideal for highly agglutinative scripts like Arabic, Devanagari etc. We will be starting
- with Telugu however. The core technology behind this is going to be Recurrent Neural Networks
- using CTC. The support for this will be coming from the repo [rnn_ctc](https://github.com/rakeshvar/rnn_ctc).
+This project aims to build a very ambitious OCR framework, that should work on any language.
+It will not rely on segmentation algorithms (at the glyph level), making it ideal for highly
+agglutinative scripts like Arabic, Devanagari etc. We will be starting with Telugu however. 
+The core technology behind this is going to be Recurrent Neural Networks using CTC from 
+the repo [rnn_ctc](https://github.com/rakeshvar/rnn_ctc).
 
-# Code so far
-Date `2016, Mar, 8`
-
-1. `akshara_regexp`:  Regular expression to split a Telugu sentence into aksharas(syllables).
-2. `cffi_wrapper.py`: A wrapper around functions to render text to images. (Uses cairo via cffi)
-3. `indic_scribe.py`: Uses cffi_wrapper to render given text to image.
-4. `linedraw.py`: Class wrapper around indic_scribe and a labeler.
-5. `print_utils.py`
-6. `scribe_corpus.py`: Given a corpus of unicode text. It will write each line to an image and
-save the numpy arrays. Uses `indic_scribe`.
-7. `telugu_fonts.py`: List of telugu fonts and their properties.
-8. `telugu_labeler_basic.py`: A labler, takes a string of unicode text and returns a sequence of
-labels. These labels could be at the akshara level or unicode character level or at an intermediate
-level. The basic labeler just returns one label for each unicode character.
-9. `line_seperate.py`: Detects lines in a binary text image.
+# Dependencies
+1. numpy
+1. scipy
+2. theano
+3. libffi
+4. cffi
+5. cairocffi
 
 # Setup
 
@@ -33,30 +25,54 @@ cd chamanti_ocr
 ./scripts/install.sh
 ```
 
-For now you can see if `scribe.py` is working properly by running it as
+## Fonts 
+You will need a lot of fonts for a language you want to train on. 
+You can get numerous Telugu fonts from [here](https://github.com/TeluguOCR/Fonts). 
+Just copy all the fonts to your `~/.fonts` directory.
+
+# Running
+
+## Checking
+Given the complicated dependencies, you can first check if you have all the dependencies as
+
 ```sh
-python3 scribe.py <(echo 'క్రైః') > kraih.txt
+cd tests
+python3 test_scribe_random.py
+python3 test_scribe_all_fonts.py <(echo 'క్రైః') > kraih.txt
+# The output should contain the text rendered in various fonts
 ```
-The output should contain the text rendered in various fonts!
 
-* You can get the various fonts from [this repo](https://github.com/TeluguOCR/Fonts). Just copy all the fonts to your `~/.fonts` directory.
+## Training an RNN
+You can now train an RNN to read Telugu! Although you can not save it yet!
 
-
+```sh
+python3 train.py
+```
 
 # Troubleshooting
 
-You should have `libffi`, `cffi` and `cairocffi` installed. These are constantly changing and are works in
-progress. More over you might need root privileges to install libraires.
+## Dependencies 
 
-If `cffi` is complaining that it needs `libffi` then *try* to install it as
+You should have `libffi`, `cffi` and `cairocffi` installed. 
+These are constantly changing and are works in progress. 
+More over you might need root privileges to install libraries (libffi).
+
+If `cffi` is complaining that it needs `libffi` then try to install it as
+
+### Ubuntu
 
 ```sh
 sudo apt-get install libffi-dev
-# OR
+```
+
+### RHEL, CentOS
+
+```sh
 yum install libffi
 ```
 
-But then if you are not root on an RHEL machine (which is the case if you are on a server) then
+But then if you are **not** root on an RHEL machine (which is the case if you are on a server) then
+try
 
 ```sh
 mkdir ~/software/
@@ -73,7 +89,7 @@ make install
 Open `.bashrc` file and add these lines
 
 ```
-export PATH=$PATH:~/usr/bin:~/software/eclipse
+export PATH=$PATH:~/usr/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/usr/lib:~/usr/lib64
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:~/usr/include:~/usr/lib/libffi-3.2.1/include
 export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/usr/include:~/usr/lib/libffi-3.2.1/include
@@ -82,8 +98,8 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:~/usr/include:~/usr/lib/libffi-3.2
 Try installing those packages again
 
 ```sh
-LDFLAGS=-L/home/<NAME>/usr/lib64 pip3 install cffi==0.8.6
-pip3 install cairocffi==0.6
+LDFLAGS=-L/home/<NAME>/usr/lib64 pip3 install cffi
+pip3 install cairocffi
 ```
 
 ## Other Problems

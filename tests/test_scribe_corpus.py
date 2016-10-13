@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-
+'''
+Given a corpus of unicode text. It will write each line to an image and
+save the numpy arrays.
+'''
 import sys
 import pickle
 import scribe as scribe
