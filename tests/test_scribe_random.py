@@ -13,6 +13,7 @@ try:
     image, labels = scriber()
     slab_print(image)
     print(image.shape)
+    print(language.get_chars(labels))
     print(labels)
     # print("Twist: {:.3f}".format(angle), fp)
     # print(text)
