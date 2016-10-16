@@ -58,7 +58,7 @@ def task():
     #     print(y_blanked, end=' ')
     #     continue
     cst, pred, forward_probs = ntwk.trainer(image, labels_blanked)
-    return image, labels, cst, pred, forward_probs
+    return image, labels, labels_blanked, cst, pred, forward_probs
 
 
 max_workers = multiprocessing.cpu_count()
@@ -79,28 +79,27 @@ def train_network():
         for samp in range(num_samples):
             queue_tasks()
             task = task_queue.get()
-            x, y, cst, pred, forward_probs = task.result()
+            x, y, y_blanked, cst, pred, forward_probs = task.result()
 
             if np.isinf(cst):
-                # printer.show_all(y, x, pred,
-                #                  (forward_probs > 1e-20, 'Forward probabilities:', y_blanked))
-                # print('Exiting on account of Inf Cost...')
+                printer.show_all(y, x, pred,
+                                 (forward_probs > 1e-20, 'Forward probabilities:', y_blanked))
+                print('Exiting on account of Inf Cost...')
                 break
 
             if samp == 0:   # or len(y) == 0:
                 pred, hidden = ntwk.tester(x)
-
-                # print('Epoch:{:6d} Cost:{:.3f}'.format(epoch, float(cst)))
-                # printer.show_all(y, x, pred,
-                #                  (forward_probs > -6, 'Forward probabilities:', y_blanked),
-                #                  ((hidden + 1)/2, 'Hidden Layer:'))
-                # utils.pprint_probs(forward_probs)
+                print('Epoch:{:6d} Cost:{:.3f}'.format(epoch, float(cst)))
+                printer.show_all(y, x, pred,
+                                 (forward_probs > -6, 'Forward probabilities:', y_blanked),
+                                 ((hidden + 1)/2, 'Hidden Layer:'))
+                utils.pprint_probs(forward_probs)
 
             if len(y) > 1:
                 success[0] += printer.decode(pred) == y
                 success[1] += 1
 
-        print(epoch, success, len(y), samp)
+        print("Successes: {0[0]}/{0[1]}".format(success))
         successes.append(success)
         wts.append(ntwk.layers[0].params[1].get_value())
 
