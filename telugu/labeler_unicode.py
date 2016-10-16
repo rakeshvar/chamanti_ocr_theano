@@ -1,4 +1,3 @@
-
 chars = (u' ఁంఃఅఆఇఈఉఊఋఌఎఏఐఒఓఔ'
          u'కఖగఘఙచఛజఝఞటఠడఢణతథదధనపఫబభమ'
          u'యరఱలళవశషసహ'
@@ -8,10 +7,12 @@ chars = (u' ఁంఃఅఆఇఈఉఊఋఌఎఏఐఒఓఔ'
 
 num_labels = len(chars)
 
+
 def index(char):
     idx = chars.find(char)
     assert idx >= 0
     return idx
+
 
 def get_labels(text):
     """
@@ -22,3 +23,12 @@ def get_labels(text):
     :return: list of int
     """
     return [index(char) for char in text]
+
+
+def get_chars(labels):
+    """
+    Inverse of get_labels. Conversion of labels to unicode telugu text.
+    :param labels: list of labels
+    :return: list of int
+    """
+    return [chars[i] for i in labels]
