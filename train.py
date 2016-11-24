@@ -6,7 +6,8 @@ import numpy as np
 import theano as th
 
 import rnn_ctc.neuralnet as nn
-import scribe
+#from parscribe import ParScribe as Scribe
+from scribe import Scribe
 import utils
 import telugu as lang
 
@@ -22,7 +23,7 @@ print('\nArguments:'
       '\n'.format(th.config.floatX, num_epochs, num_samples))
 
 scribe_args['dtype'] = th.config.floatX
-scriber = scribe.Scribe(lang, **scribe_args)
+scriber = Scribe(lang, **scribe_args)
 printer = utils.Printer(lang.chars)
 print(scriber)
 
@@ -75,4 +76,4 @@ for epoch in range(num_epochs):
 
 with open(output_namer, 'wb') as f:
     pickle.dump((wts, successes), f, -1)
-    print(output_namer)
+    print("Output is written to:", output_namer)
