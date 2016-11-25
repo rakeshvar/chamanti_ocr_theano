@@ -8,84 +8,54 @@ import numpy as np
 print("Loading the uni and bigram counts")
 this_dir, this_filename = os.path.split(__file__)
 corpus = os.path.join(this_dir, "data", "telugu.bigram")
-beg_line, end_line, unicount, bicount = pickle.load(open(corpus, "rb"))
+beg_line, end_line, unigram_counts, bigram_counts = pickle.load(open(corpus, "rb"))
 
-bicount_listed = {}
+bi_acc_cache = {}
+bi_acc_cache_np = {}
 
+REDUCE_COUNT_BY_nTH = 8
 
 def get_next_char(char):
-    if char in bicount_listed:
-        followers, accumulated_counts = bicount_listed[char]
+    if char in bi_acc_cache:
+        followers, accumulated_counts = bi_acc_cache[char]
     else:
-        followers, counts = zip(*bicount[char].items())
+        followers, counts = zip(*bigram_counts[char].items())
         accumulated_counts = tuple(accumulate(counts))
-        bicount_listed[char] = followers, accumulated_counts
+        bi_acc_cache[char] = followers, accumulated_counts
 
-    random_location = int(accumulated_counts[-1] * random())
-    random_location = bisect.bisect(accumulated_counts, random_location)
-    return followers[random_location]
+    loc = int(accumulated_counts[-1] * random())
+    follower = bisect.bisect(accumulated_counts, loc)
+    return followers[follower]
 
 
-def get_next_char_fair(char):
+def get_next_char_decay(char):  # Nearly six times slower!
     try:
-        followers, accumulated_counts = bicount_listed[char]
+        followers, accumulated_counts = bi_acc_cache_np[char]
     except KeyError:
-        followers, counts = zip(*bicount[char].items())
-        accumulated_counts = list(accumulate(counts))
-        bicount_listed[char] = followers, accumulated_counts
+        followers, counts = zip(*bigram_counts[char].items())
+        accumulated_counts = np.fromiter(accumulate(counts), dtype=np.int32)
+        bi_acc_cache_np[char] = followers, accumulated_counts
 
-    random_location1 = int(accumulated_counts[-1] * random())
-    random_location = bisect.bisect(accumulated_counts, random_location1)
-    # if len(accumulated_counts) == 5 and char == 'న్మో':
-    #     print("{}) {:5d} < {:5d} picks {:5d} from {}".format(len(accumulated_counts),
-    #         random_location1, accumulated_counts[-1], random_location,  accumulated_counts),
-    #           end='->')
-    current_count = accumulated_counts[random_location]
-    if random_location>0:
-        current_count -= accumulated_counts[random_location-1]
-    half_current_count = current_count // 2
-    for i in range(random_location, len(accumulated_counts)):
-        accumulated_counts[i] -= half_current_count
-    # if len(accumulated_counts) == 5 and char == 'న్మో':
-    #     print(accumulated_counts, " removed {:4d}/2 = {:4d} {}".format(current_count,
-    #                                                                    half_current_count,
-    #                                                                    char))
-    return followers[random_location]
+    loc = np.int32(accumulated_counts[-1] * random())
+    follower = bisect.bisect(accumulated_counts, loc)
+    current_count = accumulated_counts[follower]
+    if follower:
+        current_count -= accumulated_counts[follower-1]
 
+    if current_count > 1:
+        if current_count < REDUCE_COUNT_BY_nTH:
+            decrement = 1
+        else:
+            decrement = current_count//REDUCE_COUNT_BY_nTH
 
-def get_next_char_fair_numpy(char):
-    try:
-        followers, accumulated_counts = bicount_listed[char]
-    except KeyError:
-        followers, counts = zip(*bicount[char].items())
-        accumulated_counts = np.cumsum(counts)
-        bicount_listed[char] = followers, accumulated_counts
+        accumulated_counts[follower:] -= decrement
 
-    random_location = int(accumulated_counts[-1] * random())
-    random_location = bisect.bisect(accumulated_counts, random_location)
-    current_count = accumulated_counts[random_location]
-    if random_location>0:
-        current_count -= accumulated_counts[random_location-1]
-    accumulated_counts[random_location:] -= current_count//2
-    return followers[random_location]
+    # if len(accumulated_counts) == 5 and char == 'ణ్ని':
+    #     print("{}) {:5d} < {:5d} picks {:2d} removed {:4d}//{} = {:3d} from {} {}".format(
+    #         len(accumulated_counts), loc, accumulated_counts[-1], follower,
+    #         current_count, REDUCE_COUNT_BY_nTH, decrement, accumulated_counts, char))
 
-
-def get_next_char_numpy(char):
-    if char in bicount_listed:
-        followers, accumulated_counts = bicount_listed[char]
-    else:
-        followers, counts = zip(*bicount[char].items())
-        accumulated_counts = np.cumsum(counts)
-        bicount_listed[char] = followers, accumulated_counts
-
-    random_location = int(accumulated_counts[-1] * random())
-    # random_location = np.searchsorted(accumulated_counts, random_location, 'right')
-    random_location = bisect.bisect(accumulated_counts, random_location)
-    return followers[random_location]
-
-
-def get_next_char_old(char):
-    return list(bicount[char].elements())[int(random() * (unicount[char]))]
+    return followers[follower]
 
 
 def get_word(length, fn=get_next_char):
@@ -98,3 +68,8 @@ def get_word(length, fn=get_next_char):
         sample_text += char
 
     return sample_text
+
+
+def get_words(n, len, fn):
+     for i in range(n):
+         get_word(len, fn)
