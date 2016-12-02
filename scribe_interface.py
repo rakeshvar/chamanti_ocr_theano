@@ -6,7 +6,9 @@ Based on:
     https://github.com/Kozea/cairocffi/issues/87
 '''
 import cffi
-# import cairocffi
+import array
+import cairocffi
+import numpy as np
 
 ffi = cffi.FFI()
 # ffi.include(cairocffi.ffi)
@@ -66,3 +68,31 @@ pangocairo = ffi.dlopen('pangocairo-1.0')
 
 gobject_ref = lambda pointer: ffi.gc(pointer, gobject.g_object_unref)
 units_from_double = pango.pango_units_from_double
+
+
+def scribe_text(text, font_style,
+                width, height,
+                x_offset, y_offset,
+                rotation):
+
+    fmt = cairocffi.FORMAT_A8
+    width = cairocffi.ImageSurface.format_stride_for_width(fmt, width)
+    data = array.array('b', [0] * (height * width))
+    surface = cairocffi.ImageSurface(fmt, width, height, data, width)
+    # pangocairo.pango_cairo_set_antialias(cairocffi.ANTIALIAS_SUBPIXEL)
+
+    context = cairocffi.Context(surface)
+    context.translate(x_offset, y_offset)
+    context.rotate(rotation)
+    layout = gobject_ref(pangocairo.pango_cairo_create_layout(context._pointer))
+    pango.pango_layout_set_text(layout, text.encode('utf8'), -1)
+
+    font_desc = pango.pango_font_description_from_string(font_style.encode('utf8'))
+    pango.pango_layout_set_font_description(layout, font_desc)
+    # pango.pango_layout_set_spacing(spc * 32)
+
+    pangocairo.pango_cairo_update_layout(context._pointer, layout)
+    pangocairo.pango_cairo_show_layout(context._pointer, layout)
+    # print(surface.get_width(), surface.get_height())
+
+    return np.frombuffer(data, dtype=np.uint8).reshape((height, width))

@@ -54,18 +54,18 @@ def slab_print(slab, col_names=None):
 
 
 class Printer():
-    def __init__(self, chars):
+    def __init__(self, symbols):
         """
         Creates a function that can print a predicted output of the CTC RNN
         It removes the blank characters (need to be set to n_classes),
         It also removes duplicates
-        :param list chars: list of characters
+        :param list symbols: list of symbols in the language encoding
         """
-        self.chars = chars + '_'
-        self.n_classes = len(self.chars) - 1
+        self.symbols = symbols + ['_']
+        self.n_classes = len(self.symbols) - 1
 
     def labels_to_chars(self, labels_out):
-        return [self.chars[l] for l in labels_out]
+        return [self.symbols[l] for l in labels_out]
 
     def remove_blanks_repeats(self, labels):
         labels_out = []

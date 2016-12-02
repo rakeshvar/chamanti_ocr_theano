@@ -6,7 +6,7 @@ import numpy as np
 import theano as th
 
 import rnn_ctc.neuralnet as nn
-#from parscribe import ParScribe as Scribe
+# from parscribe import ParScribe as Scribe
 from scribe import Scribe
 import utils
 import telugu as lang
@@ -22,21 +22,29 @@ print('\nArguments:'
       '\nNum Samples    : {}'
       '\n'.format(th.config.floatX, num_epochs, num_samples))
 
+# Initialize Language
+lang.select_labeler(args['labeler'])
+alphabet_size = len(lang.symbols)
+
+# Initialize Scriber
 scribe_args['dtype'] = th.config.floatX
 scriber = Scribe(lang, **scribe_args)
-printer = utils.Printer(lang.chars)
+printer = utils.Printer(lang.symbols)
 print(scriber)
 
+# Initialize the Neural Network
 print('Building the Network')
-ntwk = nn.NeuralNet(scriber.height, lang.num_labels, **nnet_args)
+ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
 print(ntwk)
 
-try:
-    output_namer = sys.argv[1]
-except IndexError:
-    output_namer = "default.ast"
-output_namer = output_namer[:-4] + dt.now().strftime('%Y%m%d_%H%M') + '.pkl'
+if len(sys.argv) > 1:
+    output_fname = ''.join(sys.argv[1:]).replace('.ast', '_')
+else:
+    output_fname = "default"
+output_fname += dt.now().strftime('%Y%m%d_%H%M') + '.pkl'
 successes, wts = [], []
+print("Output will be written to: ", output_fname)
+
 ################################
 print('Training the Network')
 for epoch in range(num_epochs):
@@ -44,8 +52,8 @@ for epoch in range(num_epochs):
     success = [0, 0]
 
     for samp in range(num_samples):
-        x, y = scriber()
-        y_blanked = utils.insert_blanks(y, lang.num_labels, num_blanks_at_start=2)
+        x, y = scriber.get_text_image()
+        y_blanked = utils.insert_blanks(y, alphabet_size, num_blanks_at_start=2)
         # if len(y_blanked) < 2:
         #     print(y_blanked, end=' ')
         #     continue
@@ -74,6 +82,6 @@ for epoch in range(num_epochs):
     wts.append(ntwk.layers[0].params[1].get_value())
     print("Successes: {0[0]}/{0[1]}".format(success))
 
-with open(output_namer, 'wb') as f:
+with open(output_fname, 'wb') as f:
     pickle.dump((wts, successes), f, -1)
-    print("Output is written to:", output_namer)
+    print("Output is written to:", output_fname)

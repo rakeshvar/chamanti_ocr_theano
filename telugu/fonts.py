@@ -87,10 +87,11 @@ if __name__ == '__main__':
         if f in font_properties:
             print('\n{}{}'.format(f, font_properties[f]))
         else:
-            print("[X]{}\t".format(f))
+            print("[X]{}".format(f), end='\t')
 
-    for f in font_properties:
+    print()
+    for f in sorted(font_properties.keys()):
         if f in font_names:
-            print("[✓]{}\t".format(f), end='')
+            print("[✓]{}".format(font_properties[f][ABBR]), end=' ')
         else:
-            print("\n[!]{} Not Installed".format(f))
+            print("\n[!]{} NOT INSTALLED".format(f))

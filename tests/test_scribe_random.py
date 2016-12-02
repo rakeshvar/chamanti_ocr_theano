@@ -10,7 +10,7 @@ scriber = scribe.Scribe(language, **args['scribe_args'])
 
 try:
   while True:
-    image, labels = scriber()
+    image, labels = scriber.get_text_image()
     slab_print(image)
     print(image.shape)
     print(labels)

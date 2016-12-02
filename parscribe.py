@@ -10,12 +10,12 @@ class ParScribe(Scribe):
 
     def _start_thread(self):
         def _base_call_wrapper():
-            self.queue.put(super(ParScribe, self).__call__())
+            self.queue.put(super(ParScribe, self).get_text_image())
 
         self.thread = threading.Thread(target=_base_call_wrapper, daemon=True)
         self.thread.start()
 
-    def __call__(self, *args, **kwargs):
+    def get_text_image(self, *args, **kwargs):
         self.thread.join()
         self._start_thread()
         return self.queue.get()

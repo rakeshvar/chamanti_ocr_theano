@@ -5,7 +5,8 @@ save the numpy arrays.
 '''
 import sys
 import pickle
-import scribe as scribe
+
+from scribe import scribe_wrapper
 from utils import slab_print
 
 import telugu as language
@@ -30,8 +31,7 @@ for line in text.split('\n'):
         [sz, gho, rep, ppu, spc, abbr, hasbold] = language.font_properties[fontname]
 
         for style in range(4 if hasbold else 2):
-            x = scribe.scribe(line, fontname, 5, style, spc)
-            # x = scribe.smartrim(x, 36, 5)
+            x = scribe_wrapper(line, fontname, style, 32, 200, 5, 5, 0)
             y = language.get_labels(line)
             xs.append(x)
             ys.append(y)
@@ -47,7 +47,7 @@ else:
     out_file_name = in_file_name.replace(".txt", ".pkl")
 
 with open(out_file_name, 'wb') as f:
-    pickle.dump({'x': xs, 'y': ys, 'nChars': language.num_labels}, f, -1)
+    pickle.dump({'x': xs, 'y': ys, 'nChars': len(language.symbols)}, f, -1)
 
-print('nChars:', language.num_labels)
+print('nChars:', len(language.symbols))
 print(out_file_name)

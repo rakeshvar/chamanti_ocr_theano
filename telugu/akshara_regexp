@@ -1,2 +1,0 @@
-# Regular expression to split a Telugu sentence into aksharas(syllables).
-([ఁ-ఔౠౡ!(),\-.0-9=?'"౦-౯।॥])|(([క-హ]్)*[క-హ][ా-ౌ])|(([క-హ]్)*[క-హ](?![ా-్]))|(([క-హ]్)+(?=\s))

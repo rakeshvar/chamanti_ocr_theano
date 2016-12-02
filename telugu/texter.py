@@ -58,14 +58,17 @@ def get_next_char_decay(char):  # Nearly six times slower!
     return followers[follower]
 
 
-def get_word(length, fn=get_next_char):
-    char, sample_text = ' ', ''
+def get_word(length, getter=get_next_char, as_str=False):
+    char, sample_text = ' ', []
 
     for j in range(length):
-        char = fn(char)
+        char = getter(char)
         if char == end_line:
             char = ' '
-        sample_text += char
+        sample_text.append(char)
+
+    if as_str:
+        sample_text = ''.join(sample_text)
 
     return sample_text
 
