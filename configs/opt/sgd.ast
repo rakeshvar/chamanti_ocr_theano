@@ -1,0 +1,6 @@
+{
+'nnet_args': {
+   'optimizer':'sgd',
+    'optimizer_args': {},
+    },
+}

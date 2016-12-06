@@ -1,0 +1,12 @@
+{
+# Data generation
+'scribe_args': {
+    'height':   45,
+    'hbuffer':  2,
+    'vbuffer':  0,
+    'maxangle': .05,
+    'size':     24,
+    'noise':    .05,
+    'nchars_per_sample': 1,
+    },
+}

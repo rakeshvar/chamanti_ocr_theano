@@ -1,0 +1,6 @@
+{
+'nnet_args': {
+   'optimizer':'momentum',
+   'optimizer_args': {'momentum': 0.99},
+   },
+}

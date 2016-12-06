@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import ast
 import numpy as np
+import sys
 
 
 def slab_print_ascii(nparr):
@@ -155,3 +156,15 @@ def pprint_probs(probs):
         for val in row:
             print('{:+04d}'.format(val), end='')
         print()
+
+
+def write_dict(d, f=sys.stdout, level=0):
+    tabs = '\t' * level
+    print(file=f)
+    for k in sorted(d.keys()):
+        v = d[k]
+        print('{}{}: '.format(tabs, k), file=f, end='')
+        if type(v) is dict:
+            write_dict(v, f, level+1)
+        else:
+            print('{}'.format(v), file=f)

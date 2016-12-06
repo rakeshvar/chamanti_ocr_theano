@@ -1,0 +1,10 @@
+{
+'nnet_args': {
+   'mid_layer':'BiRecurrentLayer',
+   'mid_layer_args': {
+      'nunits': 225, 
+      'learn_init_state':False,
+      'conv_sz': 1,
+      },
+   },
+}

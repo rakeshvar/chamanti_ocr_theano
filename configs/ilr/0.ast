@@ -1,0 +1,10 @@
+{
+'nnet_args': {
+    'use_log_space': True,
+
+    'learning_rate_args': {
+        'initial_rate': 1,
+        'anneal': 'inverse_sqrt',
+        'epochs_to_half': 5,}
+    },
+}

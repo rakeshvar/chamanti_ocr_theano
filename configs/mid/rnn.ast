@@ -1,0 +1,10 @@
+{
+'nnet_args': {
+   'mid_layer':'RecurrentLayer',
+   'mid_layer_args': {
+      'nunits': 360,
+      'learn_init_state':False,
+      'conv_sz':1,
+      },
+   },
+}

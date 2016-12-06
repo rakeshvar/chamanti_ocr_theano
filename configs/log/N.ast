@@ -1,5 +1,5 @@
 {
 'nnet_args': {
     'use_log_space': False,
-    },
+    }
 }

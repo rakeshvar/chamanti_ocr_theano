@@ -1,0 +1,12 @@
+{
+'nnet_args': {
+   'mid_layer':'BDLSTM',
+   'mid_layer_args': {
+      'nunits': 90, 
+      'forget': True, 
+      # 'actvn_post': 'relu50', 
+      # 'actvn_pre': 'relu10', 
+      'learn_init_states': False,
+      },
+   },
+}

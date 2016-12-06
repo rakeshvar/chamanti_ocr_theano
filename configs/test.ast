@@ -1,0 +1,5 @@
+{
+# Training
+'num_epochs': 10,
+'num_samples': 10,     # Online: Number of samples per epoch
+}

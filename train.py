@@ -1,7 +1,7 @@
-from datetime import datetime as dt
-import pickle
 import sys
+from datetime import datetime as dt
 
+import editdistance
 import numpy as np
 import theano as th
 
@@ -10,17 +10,21 @@ import rnn_ctc.neuralnet as nn
 from scribe import Scribe
 import utils
 import telugu as lang
+import utils
 
-################################ Initialize
+############################################ Read Args
 args = utils.read_args(sys.argv[1:])
 num_samples, num_epochs = args['num_samples'], args['num_epochs']
 scribe_args, nnet_args = args['scribe_args'], args['nnet_args']
 
-print('\nArguments:'
-      '\nFloatX         : {}'
-      '\nNum Epochs     : {}'
-      '\nNum Samples    : {}'
-      '\n'.format(th.config.floatX, num_epochs, num_samples))
+if len(sys.argv) > 1:
+    output_fname = '-'.join(sorted(sys.argv[1:]))
+    output_fname = output_fname.replace('.ast', '').replace('/', '').replace('configs', '')
+else:
+    output_fname = "default"
+output_fname += '_' + dt.now().strftime('%y%m%d_%H%M') + '.txt'
+distances, wts = [], []
+print("Output will be written to: ", output_fname)
 
 # Initialize Language
 lang.select_labeler(args['labeler'])
@@ -30,26 +34,22 @@ alphabet_size = len(lang.symbols)
 scribe_args['dtype'] = th.config.floatX
 scriber = Scribe(lang, **scribe_args)
 printer = utils.Printer(lang.symbols)
-print(scriber)
 
 # Initialize the Neural Network
 print('Building the Network')
 ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
-print(ntwk)
 
-if len(sys.argv) > 1:
-    output_fname = ''.join(sys.argv[1:]).replace('.ast', '_')
-else:
-    output_fname = "default"
-output_fname += dt.now().strftime('%Y%m%d_%H%M') + '.pkl'
-successes, wts = [], []
-print("Output will be written to: ", output_fname)
+# Print
+print('\nArguments:')
+utils.write_dict(args)
+print('FloatX: {}'.format(th.config.floatX))
+print('Alphabet Size: {}'.format(alphabet_size))
 
-################################
+################################ Train
 print('Training the Network')
 for epoch in range(num_epochs):
     ntwk.update_learning_rate(epoch)
-    success = [0, 0]
+    edit_dist, tot_len = 0, 0
 
     for samp in range(num_samples):
         x, y = scriber.get_text_image()
@@ -65,7 +65,7 @@ for epoch in range(num_epochs):
             print('Exiting on account of Inf Cost...')
             break
 
-        if samp == 0:   # or len(y) == 0:
+        if samp == 0 and epoch==num_epochs-1:   # or len(y) == 0:
             pred, hidden = ntwk.tester(x)
 
             print('Epoch:{:6d} Cost:{:.3f}'.format(epoch, float(cst)))
@@ -74,14 +74,21 @@ for epoch in range(num_epochs):
                              ((hidden + 1)/2, 'Hidden Layer:'))
             utils.pprint_probs(forward_probs)
 
-        if len(y) > 1:
-            success[0] += printer.decode(pred) == y
-            success[1] += 1
+        edit_dist += editdistance.eval(printer.decode(pred), y)
+        tot_len += len(y)
 
-    successes.append(success)
-    wts.append(ntwk.layers[0].params[1].get_value())
-    print("Successes: {0[0]}/{0[1]}".format(success))
+    distances.append((edit_dist, tot_len))
+    # wts.append(ntwk.layers[0].params[1].get_value())
+    # print("Successes: {0[0]}/{0[1]}".format(edit_dist))
 
-with open(output_fname, 'wb') as f:
-    pickle.dump((wts, successes), f, -1)
-    print("Output is written to:", output_fname)
+
+################################ save
+with open(output_fname, 'w') as f:
+    # pickle.dump((wts, successes), f, -1)
+    utils.write_dict(args, f)
+
+    f.write("Edit Distances\n")
+    for i, (e, t) in enumerate(distances):
+        f.write("{:4d}: {:5d}/{:5d}\n".format(i, e, t))
+
+print(output_fname, distances[-1])
