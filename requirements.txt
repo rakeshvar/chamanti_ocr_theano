@@ -3,3 +3,4 @@ scipy
 theano
 cffi
 cairocffi
+editdistance
