@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-Uses cffi_wrapper to render given text to image.
+Uses scribe_interface to render given text to image.
 '''
 import random
 
