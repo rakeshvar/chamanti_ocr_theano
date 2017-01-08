@@ -52,7 +52,7 @@ for epoch in range(num_epochs):
     edit_dist, tot_len = 0, 0
 
     for samp in range(num_samples):
-        x, y = scriber.get_text_image()
+        x, _, y = scriber.get_text_image()
         y_blanked = utils.insert_blanks(y, alphabet_size, num_blanks_at_start=2)
         # if len(y_blanked) < 2:
         #     print(y_blanked, end=' ')

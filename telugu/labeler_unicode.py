@@ -20,3 +20,13 @@ def get_labels(text):
         text = ''.join(text)
 
     return [symbols_str.index(char) for char in text]
+
+
+def get_chars(labels):
+    """
+    It converts labels to unicode telugu text.
+    It is nverse of get_labels.
+    :param labels: list of labels
+    :return: list of int
+    """
+    return [symbols[i] for i in labels]

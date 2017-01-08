@@ -49,7 +49,7 @@ class Scribe():
 
         img = horztrim(img, self.hbuffer)
 
-        return img, self.language.get_labels(text)
+        return img, text, self.language.get_labels(text)
 
     def __str__(self):
         return "Height:{} Buffers:v{} h{} Size:{}" \
