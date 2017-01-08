@@ -1,8 +1,7 @@
 from .fonts import font_properties, font_properties_list, random_font
 from .texter import get_word
-from .labeler_cv import get_labels, symbols
-from .labeler_unicode import get_chars
-
+from .labeler_cv import get_labels, symbols         # Default symbols and labels are
+                                                    # Consonant-Vowel aksharas
 
 
 def select_labeler(name):
