@@ -1,4 +1,5 @@
-import sys
+import os
+import pickle
 from datetime import datetime as dt
 
 import editdistance
@@ -36,8 +37,18 @@ scriber = Scribe(lang, **scribe_args)
 printer = utils.Printer(lang.symbols)
 
 # Initialize the Neural Network
-print('Building the Network')
-ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
+
+network_file = 'ntwk.pkl'
+if os.path.exists(network_file):
+    print('Loading existing network file')
+    with open(network_file, 'rb') as fh:
+        ntwk = pickle.load(fh)
+else:
+    print('Building the Network')
+    ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
+    with open(network_file, 'wb') as fh:
+        pickle.dump(ntwk, fh)
+
 
 # Print
 print('\nArguments:')
@@ -50,6 +61,12 @@ print('Training the Network')
 for epoch in range(num_epochs):
     ntwk.update_learning_rate(epoch)
     edit_dist, tot_len = 0, 0
+
+    print('Epoch: {} '.format(epoch))
+    os.rename(network_file, 'ntwk.bkp.pkl')
+    with open(network_file, 'wb') as fh:
+        pickle.dump(ntwk, fh)
+    print('Network saved to {}'.format(network_file))
 
     for samp in range(num_samples):
         x, _, y = scriber.get_text_image()
