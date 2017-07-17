@@ -1,3 +1,5 @@
+import os
+import pickle
 import sys
 from datetime import datetime as dt
 
@@ -22,6 +24,7 @@ if len(sys.argv) > 1:
     output_fname = output_fname.replace('.ast', '').replace('/', '').replace('configs', '')
 else:
     output_fname = "default"
+network_fname = '{}.pkl'.format(output_fname)
 output_fname += '_' + dt.now().strftime('%y%m%d_%H%M') + '.txt'
 distances, wts = [], []
 print("Output will be written to: ", output_fname)
@@ -35,9 +38,19 @@ scribe_args['dtype'] = th.config.floatX
 scriber = Scribe(lang, **scribe_args)
 printer = utils.Printer(lang.symbols)
 
+sys.setrecursionlimit(1000000)
+
 # Initialize the Neural Network
-print('Building the Network')
-ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
+if os.path.exists(network_fname):
+    print('Loading existing network file')
+    with open(network_fname, 'rb') as fh:
+        ntwk = pickle.load(fh)
+else:
+    print('Building the Network')
+    ntwk = nn.NeuralNet(scriber.height, alphabet_size, **nnet_args)
+    with open(network_fname, 'wb') as fh:
+        pickle.dump(ntwk, fh)
+
 
 # Print
 print('\nArguments:')
@@ -50,6 +63,13 @@ print('Training the Network')
 for epoch in range(num_epochs):
     ntwk.update_learning_rate(epoch)
     edit_dist, tot_len = 0, 0
+
+    print('Epoch: {} '.format(epoch))
+    # keeping 1 backup file as data might get lost, if script is stopped while pickling
+    os.rename(network_fname, 'ntwk.bkp.pkl')
+    with open(network_fname, 'wb') as fh:
+        pickle.dump(ntwk, fh)
+    print('Network saved to {}'.format(network_fname))
 
     for samp in range(num_samples):
         x, _, y = scriber.get_text_image()
