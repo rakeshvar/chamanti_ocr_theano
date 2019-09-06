@@ -49,7 +49,7 @@ You can now train an RNN to read Telugu! Although you can not save it yet!
 python3 train.py
 ```
 
-You can read the [README_DEVELOPER.md] for more details about the code and configurations.
+You can read the [developer documentation](README_DEVELOPER.md) for more details about the code and configurations.
 
 # Troubleshooting
 
