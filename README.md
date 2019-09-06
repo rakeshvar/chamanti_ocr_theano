@@ -1,10 +1,10 @@
-# చామంతి
+# Chamanti OCR చామంతి
 
 # Mission
 This project aims to build a very ambitious OCR framework, that should work on any language.
 It will not rely on segmentation algorithms (at the glyph level), making it ideal for highly
-agglutinative scripts like Arabic, Devanagari etc. We will be starting with Telugu however. 
-The core technology behind this is going to be Recurrent Neural Networks using CTC from 
+agglutinative scripts like Arabic, Devanagari etc. We will be starting with Telugu however.
+The core technology behind this is going to be Recurrent Neural Networks using CTC from
 the repo [rnn_ctc](https://github.com/rakeshvar/rnn_ctc).
 
 # Dependencies
@@ -25,9 +25,9 @@ cd chamanti_ocr
 ./scripts/install.sh
 ```
 
-## Fonts 
-You will need a lot of fonts for a language you want to train on. 
-You can get numerous Telugu fonts from [here](https://github.com/TeluguOCR/Fonts). 
+## Fonts
+You will need a lot of fonts for a language you want to train on.
+You can get numerous Telugu fonts from [here](https://github.com/TeluguOCR/Fonts).
 Just copy all the fonts to your `~/.fonts` directory.
 
 # Running
@@ -49,12 +49,14 @@ You can now train an RNN to read Telugu! Although you can not save it yet!
 python3 train.py
 ```
 
+You can read the [README_DEVELOPER.md] for more details about the code and configurations.
+
 # Troubleshooting
 
-## Dependencies 
+## Dependencies
 
-You should have `libffi`, `cffi` and `cairocffi` installed. 
-These are constantly changing and are works in progress. 
+You should have `libffi`, `cffi` and `cairocffi` installed.
+These are constantly changing and are works in progress.
 More over you might need root privileges to install libraries (libffi).
 
 If `cffi` is complaining that it needs `libffi` then try to install it as
