@@ -2,12 +2,6 @@
 
 ## Files
 
-1. `line_seperate.py` Clever code to split a text page image into individual lines.
-1. `scribe.py` Scribes a given Unicode text to a image slab. (Wrapper class.)
-1. `scribe_interface.py` Interface code to CFFI based code.
-1. `parscribe.py` Parallel Scribe (text from the given language).
-1. `trimmers.py` Trim a Black and White image to remove empty space around.
-1. `utils.py` Utilities to print images and Probabilities to terminal, etc.
 1. `train.py` Main file to train OCR for a given language. Training and network parameters are specified via `.ast` files in the `config/` directory.
 ```
 python3 train.py configs/midlayer.ast configs/len/3.ast

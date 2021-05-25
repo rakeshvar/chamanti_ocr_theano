@@ -1,6 +1,7 @@
 numpy
 scipy
 theano
-cffi
-cairocffi
 editdistance
+### Also needs the following personal repositories
+# rnn_ctc
+# IndicScribe
